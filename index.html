@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>URL Shortener</title>
+
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #fff;
+            padding: 30px;
+            width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        .copy-btn {
+            background: #38a169;
+        }
+
+        .copy-btn:hover {
+            background: #2f855a;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #333;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 6px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>🔗 URL Shortener</h2>
+
+        <form method="POST" action="/">
+            <input type="url" name="long_url" id="longUrlInput" placeholder="Paste your long URL here..." required>
+            <button type="submit">Shorten URL</button>
+        </form>
+
+
+        {% if short_url %}
+        <input type="text" id="shortUrl" value="{{ short_url }}" readonly>
+        <button class="copy-btn" onclick="copyURL()">Copy URL</button>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+
+    <div id="toast" class="toast">✅ Copied!</div>
+
+    <script>
+        // Auto-clear input AFTER submit
+        document.getElementById("urlForm").addEventListener("submit", function () {
+            setTimeout(() => {
+                document.getElementById("longUrlInput").value = "";
+            }, 100);
+        });
+
+        //  Copy + Toast
+        function copyURL() {
+            const input = document.getElementById("shortUrl");
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2000);
+        }
+    </script>
+
+</body>
+
+</html>
