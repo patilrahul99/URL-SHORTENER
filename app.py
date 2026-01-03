@@ -16,7 +16,7 @@ while True:
     try:
         db = pymysql.connect(
             host="mysql",
-            user="root",
+            user="root", # for only testing purpose hardcode credentials! 
             password="root123",
             database="url_shortener"
         )
